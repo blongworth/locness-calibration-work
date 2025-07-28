@@ -1,0 +1,28 @@
+---
+title: "pH Tris Calibration"
+format: html
+---
+
+```{python}
+# Import necessary libraries
+import polars as pl
+
+# Read the CSV file into a Polars DataFrame
+data = pl.read_csv("data/ph_test.csv")
+
+# Display the first few rows of the DataFrame
+data.head()
+```
+
+```{python}
+# Convert 'pc_time' column to datetime format
+data = data.with_columns(pl.col("pc_time").str.strptime(pl.Datetime))
+
+# Display the updated DataFrame
+data.head()
+```
+
+```{python}
+# Plot 'vrse' vs 'pc_time' using Polars plotting
+data.select(["pc_time", "vrse"]).plot(x="pc_time", y="vrse", title="VRSE vs PC Time")
+```
