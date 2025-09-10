@@ -146,7 +146,7 @@ def _():
 
 
 @app.cell
-def _(calc_ph, df_tris_pre, k0, k02, k2, pre_sal):
+def _(calc_ph, df_tris_pre, k0, k02, k2, np, pre_sal):
     df_tris_pre["ph_free_calc"], df_tris_pre["ph_total_calc"] = calc_ph(
         df_tris_pre["vrse"], 0, df_tris_pre["temp"], pre_sal, k0, k2, 0
     )
@@ -157,6 +157,8 @@ def _(calc_ph, df_tris_pre, k0, k02, k2, pre_sal):
     print(f"Calculated pH total: {df_tris_pre['ph_total_calc'].mean()}")
     print(f"Calculated pH total sd: {df_tris_pre['ph_total_calc'].std()}")
     print(f"Calculated pH total with new k0: {df_tris_pre['ph_total_calc2'].mean()}")
+    _stderr_value = df_tris_pre['ph_total_calc2'].std(ddof=1) / np.sqrt(df_tris_pre['ph_total_calc2'].count())
+    print(f"Standard Error: {_stderr_value:.2g}")
     print(
         f"pH difference due to k0: {df_tris_pre['ph_total_calc2'].mean() - df_tris_pre['ph_total_calc'].mean()}"
     )
